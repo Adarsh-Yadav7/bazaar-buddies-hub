@@ -2,8 +2,11 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Store, TrendingUp, Users, ArrowRight, CheckCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const UserTypeSelector = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
@@ -59,6 +62,7 @@ const UserTypeSelector = () => {
               <Button 
                 size="lg" 
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 group-hover:scale-105 transition-transform"
+                onClick={() => navigate('/vendor-login')}
               >
                 Start as Vendor
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -116,6 +120,7 @@ const UserTypeSelector = () => {
                 size="lg" 
                 variant="outline"
                 className="w-full border-accent text-accent hover:bg-accent hover:text-accent-foreground group-hover:scale-105 transition-transform"
+                onClick={() => navigate('/supplier-login')}
               >
                 Start as Supplier
                 <ArrowRight className="ml-2 h-4 w-4" />
