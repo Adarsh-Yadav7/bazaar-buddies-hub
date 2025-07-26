@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+   const navigate = useNavigate();
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
