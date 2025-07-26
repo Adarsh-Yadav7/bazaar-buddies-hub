@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Menu, X, Store, Truck } from 'lucide-react';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +33,7 @@ const Header = () => {
             <a href="#about" className="text-foreground hover:text-primary transition-colors">
               About
             </a>
+            <LanguageSwitcher />
           </nav>
 
           {/* Action Buttons */}
@@ -78,6 +80,9 @@ const Header = () => {
               <a href="#about" className="text-foreground hover:text-primary transition-colors">
                 About
               </a>
+              <div className="py-2">
+                <LanguageSwitcher />
+              </div>
               <div className="flex space-x-2 pt-2">
                 <Button variant="outline" size="sm" className="flex-1">
                   <User className="h-4 w-4 mr-1" />
