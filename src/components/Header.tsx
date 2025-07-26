@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Menu, X, Store, Truck } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { Link } from 'react-router-dom';
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
