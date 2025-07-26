@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Menu, X, Store, Truck } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
 
 const Header = () => {
@@ -85,10 +87,17 @@ const Header = () => {
                 <LanguageSwitcher />
               </div>
               <div className="flex space-x-2 pt-2">
-                <Button variant="outline" size="sm" className="flex-1">
-                  <User className="h-4 w-4 mr-1" />
-                  Login
-                </Button>
+                const navigate = useNavigate();
+
+<Button
+  variant="outline"
+  size="sm"
+  onClick={() => navigate('/supplier-login')}
+>
+  <User className="h-4 w-4 mr-1" />
+  Login
+</Button>
+
                 <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary">
                   Join Now
                 </Button>
