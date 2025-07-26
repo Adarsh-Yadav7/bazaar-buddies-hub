@@ -36,18 +36,31 @@ const LanguageSwitcher = ({ className = '' }: LanguageSwitcherProps) => {
 
       // Set up the global callback function first
       (window as any).googleTranslateElementInit = () => {
-        if ((window as any).google && (window as any).google.translate) {
-          new (window as any).google.translate.TranslateElement(
-            {
-              pageLanguage: 'en',
-              includedLanguages: languages.map(lang => lang.code).join(','),
-              layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
-              autoDisplay: false,
-              multilanguagePage: true,
-            },
-            'google_translate_element'
-          );
-        }
+        // Wait for the Google Translate API to be fully loaded
+        const initTranslate = () => {
+          if ((window as any).google && 
+              (window as any).google.translate && 
+              (window as any).google.translate.TranslateElement) {
+            try {
+              new (window as any).google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: languages.map(lang => lang.code).join(','),
+                layout: (window as any).google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false,
+                multilanguagePage: true,
+              }, 'google_translate_element');
+            } catch (error) {
+              console.error('Error initializing Google Translate:', error);
+              // Retry after a short delay
+              setTimeout(initTranslate, 500);
+            }
+          } else {
+            // If API not ready, retry
+            setTimeout(initTranslate, 200);
+          }
+        };
+        
+        initTranslate();
       };
 
       const script = document.createElement('script');
@@ -55,12 +68,6 @@ const LanguageSwitcher = ({ className = '' }: LanguageSwitcherProps) => {
       script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
       script.defer = true;
-      script.onload = () => {
-        // Force initialization after script loads
-        if ((window as any).googleTranslateElementInit) {
-          (window as any).googleTranslateElementInit();
-        }
-      };
       document.head.appendChild(script);
     };
 
@@ -76,60 +83,70 @@ const LanguageSwitcher = ({ className = '' }: LanguageSwitcherProps) => {
     setCurrentLanguage(languageCode);
 
     try {
-      if (languageCode === 'en') {
-        // Reset to original language
-        const iframe = document.querySelector('.goog-te-menu-frame');
-        if (iframe) {
-          const iframeDoc = (iframe as HTMLIFrameElement).contentDocument;
-          if (iframeDoc) {
-            const originalLink = iframeDoc.querySelector('.goog-te-menu2-item span:first-child') as HTMLElement;
-            if (originalLink) {
-              originalLink.click();
-            }
-          }
-        }
-        // Fallback: reload if direct method fails
-        setTimeout(() => {
-          if (document.documentElement.classList.contains('translated-ltr') || 
-              document.documentElement.classList.contains('translated-rtl')) {
-            window.location.reload();
-          }
-          setIsLoading(false);
-        }, 1000);
-        return;
-      }
-
-      // Trigger translation by finding and clicking the language option
-      const waitForTranslateReady = (attempts = 0) => {
-        if (attempts > 50) {
+      // Wait for Google Translate to be ready
+      const waitForGoogleTranslate = (callback: () => void, attempts = 0) => {
+        if (attempts > 100) {
+          console.error('Google Translate not available after 10 seconds');
           setIsLoading(false);
           return;
         }
 
         const selectElement = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-        if (selectElement && selectElement.options.length > 1) {
-          // Find the option for the selected language
+        if (selectElement && selectElement.options && selectElement.options.length > 1) {
+          callback();
+        } else {
+          setTimeout(() => waitForGoogleTranslate(callback, attempts + 1), 100);
+        }
+      };
+
+      if (languageCode === 'en') {
+        // Reset to original language
+        waitForGoogleTranslate(() => {
+          const selectElement = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+          if (selectElement) {
+            selectElement.value = '';
+            selectElement.selectedIndex = 0;
+            const event = new Event('change', { bubbles: true });
+            selectElement.dispatchEvent(event);
+            
+            // Wait for translation to complete
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 1500);
+          }
+        });
+        return;
+      }
+
+      // Trigger translation to selected language
+      waitForGoogleTranslate(() => {
+        const selectElement = document.querySelector('.goog-te-combo') as HTMLSelectElement;
+        if (selectElement) {
+          // Find the correct option for the language
+          let found = false;
           for (let i = 0; i < selectElement.options.length; i++) {
             if (selectElement.options[i].value === languageCode) {
               selectElement.selectedIndex = i;
               selectElement.value = languageCode;
               
-              // Trigger change event
-              const changeEvent = new Event('change', { bubbles: true });
-              selectElement.dispatchEvent(changeEvent);
+              const event = new Event('change', { bubbles: true });
+              selectElement.dispatchEvent(event);
               
-              // Wait for translation to complete
-              setTimeout(() => setIsLoading(false), 2000);
-              return;
+              found = true;
+              break;
             }
           }
+          
+          if (!found) {
+            console.error(`Language ${languageCode} not found in options`);
+          }
+          
+          // Wait for translation to complete
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
         }
-        
-        // If not ready, try again
-        setTimeout(() => waitForTranslateReady(attempts + 1), 100);
-      };
-
-      waitForTranslateReady();
+      });
     } catch (error) {
       console.error('Translation error:', error);
       setIsLoading(false);
