@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, User, Menu, X, Store, Truck } from 'lucide-react';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { Link } from 'react-router-dom';
+
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,9 +29,10 @@ const Header = () => {
             <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
               Marketplace
             </a>
-            <a href="#suppliers" className="text-foreground hover:text-primary transition-colors">
-              Suppliers
-            </a>
+              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
+                Suppliers
+              </Link>
+
             <a href="#about" className="text-foreground hover:text-primary transition-colors">
               About
             </a>
@@ -71,9 +74,10 @@ const Header = () => {
               <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
                 Marketplace
               </a>
-              <a href="#suppliers" className="text-foreground hover:text-primary transition-colors">
-                Suppliers
-              </a>
+              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
+              Suppliers
+            </Link>
+
               <a href="#about" className="text-foreground hover:text-primary transition-colors">
                 About
               </a>
