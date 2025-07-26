@@ -40,7 +40,7 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white">
+{/*               <Button size="lg" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white">
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Start Buying
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -48,7 +48,7 @@ const Hero = () => {
               <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10">
                 <Users className="mr-2 h-5 w-5" />
                 Become Supplier
-              </Button>
+              </Button> */}
             </div>
 
             {/* Stats */}
