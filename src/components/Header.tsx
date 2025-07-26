@@ -50,9 +50,6 @@ const Header = () => {
                 <User className="h-4 w-4 mr-1" />
                 Login
               </Button>
-              <Button size="sm" className="bg-gradient-to-r from-primary to-secondary hover:opacity-90">
-                Join Now
-              </Button>
             </div>
 
             {/* Mobile Menu Button */}
