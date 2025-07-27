@@ -8,11 +8,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
+import { useAuth } from "@/context/AuthContext"; // ✅
 
 const VendorLogin = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { setIsLoggedIn } = useAuth(); 
 
   // Signup form states
   const [vendorName, setVendorName] = useState('');
@@ -37,6 +39,7 @@ const VendorLogin = () => {
       const data = await response.json();
 
       if (data.message === 'Login successful') {
+        setIsLoggedIn(true);
         toast({
           title: 'Login Successful',
           description: 'Welcome back! Redirecting to your home page...',

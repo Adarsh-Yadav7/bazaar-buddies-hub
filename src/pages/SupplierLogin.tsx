@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
+import { useAuth } from "@/context/AuthContext"; 
 
 const SupplierLogin = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -43,6 +44,7 @@ const SupplierLogin = () => {
       const data = await response.json();
 
       if (data.message === 'Login successful') {
+        setIsLogin(true);
         toast({
           title: 'Login Successful',
           description: 'Welcome back! Redirecting to your home page...',
