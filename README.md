@@ -60,7 +60,7 @@ nodemon app.js
 
 After starting the backend server, follow these steps in a new terminal window:
 
-```bash
+
 # Step 1: Navigate one directory up
 cd ..
 
