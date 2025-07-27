@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
 import { Store, ArrowLeft } from 'lucide-react';
 
@@ -17,7 +18,7 @@ const SupplierLogin = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [businessName, setBusinessName] = useState('');
   const [location, setLocation] = useState('');
-  const [productTypes, setProductTypes] = useState<string[]>([]);
+  const [selectedProductType, setSelectedProductType] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [deliveryAvailable, setDeliveryAvailable] = useState(false);
   
@@ -43,13 +44,6 @@ const SupplierLogin = () => {
     'Fruits', 'Vegetables', 'Grains', 'Dairy', 'Meat', 'Seafood', 'Spices', 'Herbs'
   ];
 
-  const handleProductTypeChange = (productType: string, checked: boolean) => {
-    if (checked) {
-      setProductTypes([...productTypes, productType]);
-    } else {
-      setProductTypes(productTypes.filter(type => type !== productType));
-    }
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-accent/5 to-primary/5 flex items-center justify-center p-4">
@@ -161,24 +155,20 @@ const SupplierLogin = () => {
                 />
               </div>
 
-              <div className="space-y-3">
-                <Label>Type of Products Supplied</Label>
-                <div className="grid grid-cols-2 gap-2">
-                  {productOptions.map((product) => (
-                    <div key={product} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={product}
-                        checked={productTypes.includes(product)}
-                        onCheckedChange={(checked) => 
-                          handleProductTypeChange(product, checked as boolean)
-                        }
-                      />
-                      <Label htmlFor={product} className="text-sm">
+              <div className="space-y-2">
+                <Label htmlFor="productType">Type of Products Supplied</Label>
+                <Select value={selectedProductType} onValueChange={setSelectedProductType} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select product type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {productOptions.map((product) => (
+                      <SelectItem key={product} value={product}>
                         {product}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-2">
