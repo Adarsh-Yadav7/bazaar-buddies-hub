@@ -12,14 +12,11 @@ import SupplierLogin from "./pages/SupplierLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import Analytics from "./pages/Analytics";
-<<<<<<< HEAD
 import TrackOrders from './pages/TrackOrders';
 import ChatWithSupplier from './pages/ChatWithSupplier';
 import CompareSuppliers from './pages/CompareSuppliers';
 
-=======
 import AddProduct from "./pages/AddProduct";
->>>>>>> 8880528d3ec4c894167206a5becbdad3965349b0
 const queryClient = new QueryClient();
 
 const App = () => (
