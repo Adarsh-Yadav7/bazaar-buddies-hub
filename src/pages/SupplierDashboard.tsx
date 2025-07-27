@@ -4,6 +4,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
+import { SupplierInfoDialog } from "@/components/SupplierInfoDialog";
+
 import { 
   Store, 
   Plus, 
@@ -81,6 +83,42 @@ const SupplierDashboard = () => {
       time: "1 day ago"
     }
   ];
+  const vendors = {
+  "Raj's Food Cart": {
+    name: "Raj's Food Cart",
+    location: "Mumbai, India",
+    rating: 4.7,
+    totalProducts: 23,
+    joinedDate: "Feb 2023",
+    phone: "+91 9988776655",
+    email: "raj@foodcart.in",
+    description: "Local vendor specializing in fresh produce for street-style cuisine.",
+    specialties: ["Street Food", "Vegetables", "Spices"],
+  },
+  "Street Kitchen Pro": {
+    name: "Street Kitchen Pro",
+    location: "Delhi, India",
+    rating: 4.5,
+    totalProducts: 45,
+    joinedDate: "May 2022",
+    phone: "+91 9876543210",
+    email: "info@streetkitchen.pro",
+    description: "Modern food cart vendor serving high-volume orders daily.",
+    specialties: ["Bulk Orders", "Potatoes", "Fast Service"],
+  },
+  "Tasty Bites": {
+    name: "Tasty Bites",
+    location: "Bangalore, India",
+    rating: 4.9,
+    totalProducts: 18,
+    joinedDate: "Aug 2021",
+    phone: "+91 9123456780",
+    email: "contact@tastybites.in",
+    description: "Trusted partner for high-quality ingredients and timely orders.",
+    specialties: ["Onions", "Fresh Produce", "Daily Delivery"],
+  },
+};
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -265,17 +303,19 @@ const SupplierDashboard = () => {
                           {order.time}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-bold text-accent mb-2">{order.amount}</div>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="mr-1 h-3 w-3" />
-                            View
-                          </Button>
-                          {order.status === 'pending' && (
-                            <Button size="sm">
-                              Accept
-                            </Button>
+<div className="flex gap-2">
+  <SupplierInfoDialog supplier={vendors[order.vendor]}>
+    <Button size="sm" variant="outline">
+      <Eye className="mr-1 h-3 w-3" />
+      View
+    </Button>
+  </SupplierInfoDialog>
+
+  {order.status === 'pending' && (
+    <Button size="sm">Accept</Button>
+  )}
+</div>
+
                           )}
                         </div>
                       </div>
