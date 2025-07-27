@@ -54,26 +54,21 @@ cd bazaar-buddie-hub
 cd backend
 npm install
 
-# Start the server
+nodemon app.js
+
+### 🖥️ Running the Project (Frontend)
+
+After starting the backend server, follow these steps in a new terminal window:
+
+```bash
+# Step 1: Navigate one directory up
+cd ..
+
+# Step 2: Install frontend dependencies
+npm install
+
+# Step 3: Start the frontend development server
 npm run dev
 
-### 🖥️ Running the Project
-
-After starting the server, follow these steps to run the frontend:
-
-1. Open **two terminal windows** side by side.
-2. In the **second terminal**, navigate one level up:
-   cd ..
-
-
-3. Install frontend dependencies:
-   npm install
-
-4. Start the frontend development server:
-   npm run dev
-
-
-This will launch both the backend and frontend servers concurrently.
-````
 
 
