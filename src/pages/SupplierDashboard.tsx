@@ -1,17 +1,17 @@
+// ✅ Full working version:
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { useNavigate } from 'react-router-dom';
 import { SupplierInfoDialog } from "@/components/SupplierInfoDialog";
 
-import { 
-  Store, 
-  Plus, 
-  Star, 
-  Users, 
-  Package, 
+import {
+  Store,
+  Plus,
+  Star,
+  Users,
+  Package,
   LogOut,
   Camera,
   Eye,
@@ -83,42 +83,42 @@ const SupplierDashboard = () => {
       time: "1 day ago"
     }
   ];
-  const vendors = {
-  "Raj's Food Cart": {
-    name: "Raj's Food Cart",
-    location: "Mumbai, India",
-    rating: 4.7,
-    totalProducts: 23,
-    joinedDate: "Feb 2023",
-    phone: "+91 9988776655",
-    email: "raj@foodcart.in",
-    description: "Local vendor specializing in fresh produce for street-style cuisine.",
-    specialties: ["Street Food", "Vegetables", "Spices"],
-  },
-  "Street Kitchen Pro": {
-    name: "Street Kitchen Pro",
-    location: "Delhi, India",
-    rating: 4.5,
-    totalProducts: 45,
-    joinedDate: "May 2022",
-    phone: "+91 9876543210",
-    email: "info@streetkitchen.pro",
-    description: "Modern food cart vendor serving high-volume orders daily.",
-    specialties: ["Bulk Orders", "Potatoes", "Fast Service"],
-  },
-  "Tasty Bites": {
-    name: "Tasty Bites",
-    location: "Bangalore, India",
-    rating: 4.9,
-    totalProducts: 18,
-    joinedDate: "Aug 2021",
-    phone: "+91 9123456780",
-    email: "contact@tastybites.in",
-    description: "Trusted partner for high-quality ingredients and timely orders.",
-    specialties: ["Onions", "Fresh Produce", "Daily Delivery"],
-  },
-};
 
+  const vendors = {
+    "Raj's Food Cart": {
+      name: "Raj's Food Cart",
+      location: "Mumbai, India",
+      rating: 4.7,
+      totalProducts: 23,
+      joinedDate: "Feb 2023",
+      phone: "+91 9988776655",
+      email: "raj@foodcart.in",
+      description: "Local vendor specializing in fresh produce for street-style cuisine.",
+      specialties: ["Street Food", "Vegetables", "Spices"],
+    },
+    "Street Kitchen Pro": {
+      name: "Street Kitchen Pro",
+      location: "Delhi, India",
+      rating: 4.5,
+      totalProducts: 45,
+      joinedDate: "May 2022",
+      phone: "+91 9876543210",
+      email: "info@streetkitchen.pro",
+      description: "Modern food cart vendor serving high-volume orders daily.",
+      specialties: ["Bulk Orders", "Potatoes", "Fast Service"],
+    },
+    "Tasty Bites": {
+      name: "Tasty Bites",
+      location: "Bangalore, India",
+      rating: 4.9,
+      totalProducts: 18,
+      joinedDate: "Aug 2021",
+      phone: "+91 9123456780",
+      email: "contact@tastybites.in",
+      description: "Trusted partner for high-quality ingredients and timely orders.",
+      specialties: ["Onions", "Fresh Produce", "Daily Delivery"],
+    },
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -238,7 +238,7 @@ const SupplierDashboard = () => {
                         <h3 className="font-semibold text-lg">{product.name}</h3>
                         <p className="text-2xl font-bold text-accent">{product.price}</p>
                       </div>
-                      
+
                       <div className="space-y-2 mb-4">
                         <div className="flex justify-between text-sm">
                           <span className="text-muted-foreground">Stock:</span>
@@ -273,7 +273,7 @@ const SupplierDashboard = () => {
               </div>
             </div>
 
-            {/* Real-time Orders */}
+            {/* Orders Section */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -303,21 +303,18 @@ const SupplierDashboard = () => {
                           {order.time}
                         </div>
                       </div>
-<div className="flex gap-2">
-  <SupplierInfoDialog supplier={vendors[order.vendor]}>
-    <Button size="sm" variant="outline">
-      <Eye className="mr-1 h-3 w-3" />
-      View
-    </Button>
-  </SupplierInfoDialog>
 
-  {order.status === 'pending' && (
-    <Button size="sm">Accept</Button>
-  )}
-</div>
+                      <div className="flex gap-2">
+                        <SupplierInfoDialog supplier={vendors[order.vendor]}>
+                          <Button size="sm" variant="outline">
+                            <Eye className="mr-1 h-3 w-3" />
+                            View
+                          </Button>
+                        </SupplierInfoDialog>
 
-                          )}
-                        </div>
+                        {order.status === 'pending' && (
+                          <Button size="sm">Accept</Button>
+                        )}
                       </div>
                     </div>
                   ))}
