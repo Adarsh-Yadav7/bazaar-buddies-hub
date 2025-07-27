@@ -29,12 +29,8 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
-              Marketplace
-            </a>
-              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
-                Suppliers
-              </Link>
+            
+      
 
             <a href="#about" className="text-foreground hover:text-primary transition-colors">
               About
