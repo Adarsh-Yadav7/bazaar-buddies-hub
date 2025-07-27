@@ -124,10 +124,13 @@ const VendorDashboard = () => {
                   <span className="text-sm text-muted-foreground">Total Savings</span>
                   <span className="font-semibold text-accent">₹12,500</span>
                 </div>
-                <Button size="sm" className="w-full">
-                  <Package className="mr-2 h-4 w-4" />
-                  Track Orders
-                </Button>
+                <Button
+                    size="sm" className="w-full"
+                    onClick={() => navigate('/track-orders')} // ✅ Navigation
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    Track Orders
+                  </Button>
               </CardContent>
             </Card>
           </div>
@@ -213,11 +216,15 @@ const VendorDashboard = () => {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" className="flex-1">
-                            <MessageCircle className="mr-2 h-4 w-4" />
-                            Chat
-                          </Button>
-                          <Button size="sm" variant="outline" className="flex-1">
+                          <Button
+                           size="sm" className="flex-1"
+                           onClick={() => navigate('/chat')}
+>                         
+                           <MessageCircle className="mr-2 h-4 w-4" />
+                           Chat
+                         </Button>
+                          <Button size="sm" variant="outline" className="flex-1"
+                          onClick={() => navigate('/compare')}>
                             Compare
                           </Button>
                         </div>
@@ -236,14 +243,24 @@ const VendorDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-3 gap-4">
-                  <Button variant="outline" className="h-20 flex-col">
-                    <MessageCircle className="h-6 w-6 mb-2" />
-                    <span>Chat with Suppliers</span>
-                  </Button>
-                  <Button variant="outline" className="h-20 flex-col">
+                  <Button
+  variant="outline"
+  className="h-20 flex-col"
+  onClick={() => navigate('/chat')}
+>
+  <MessageCircle className="h-6 w-6 mb-2" />
+  <span>Chat with Suppliers</span>
+</Button>
+
+                  <Button
+                    variant="outline"
+                    className="h-20 flex-col"
+                    onClick={() => navigate('/track-orders')} // ✅ Navigation
+                  >
                     <Package className="h-6 w-6 mb-2" />
                     <span>Track My Orders</span>
                   </Button>
+
                   <Button
   variant="outline"
   className="h-20 flex-col"

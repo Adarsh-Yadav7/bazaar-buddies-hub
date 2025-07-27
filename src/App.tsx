@@ -12,6 +12,9 @@ import SupplierLogin from "./pages/SupplierLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import Analytics from "./pages/Analytics";
+import TrackOrders from './pages/TrackOrders';
+import ChatWithSupplier from './pages/ChatWithSupplier';
+import CompareSuppliers from './pages/CompareSuppliers';
 
 const queryClient = new QueryClient();
 
@@ -29,6 +32,9 @@ const App = () => (
             <Route path="/supplier-login" element={<SupplierLogin />} />
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
             <Route path="/analytics" element={<Analytics />} />
+            <Route path="/track-orders" element={<TrackOrders />} />
+            <Route path="/chat" element={<ChatWithSupplier />} />
+            <Route path="/compare" element={<CompareSuppliers />} />
             <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

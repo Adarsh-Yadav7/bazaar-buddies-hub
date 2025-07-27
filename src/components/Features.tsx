@@ -28,8 +28,8 @@ const Features = () => {
     },
     {
       icon: MessageCircle,
-      title: "Direct Communication",
-      description: "Chat directly with suppliers, negotiate prices, and build lasting business relationships.",
+      title: "24/7 Service",
+      description: "24/7 Customer service available.",
       color: "text-secondary"
     },
     {
