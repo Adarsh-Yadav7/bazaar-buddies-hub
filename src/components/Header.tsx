@@ -70,12 +70,7 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <nav className="flex flex-col space-y-3">
-              <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
-                Marketplace
-              </a>
-              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
-              Suppliers
-            </Link>
+              
 
               <a href="#about" className="text-foreground hover:text-primary transition-colors">
                 About
