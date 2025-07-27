@@ -1,11 +1,12 @@
-// ✅ Full working version:
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { SupplierInfoDialog } from "@/components/SupplierInfoDialog";
+import EditItem from "@/components/EditItem";
+
 import {
   Store,
   Plus,
@@ -13,7 +14,6 @@ import {
   Users,
   Package,
   LogOut,
-  Camera,
   Eye,
   Edit,
   TrendingUp,
@@ -24,14 +24,25 @@ import {
 
 const SupplierDashboard = () => {
   const navigate = useNavigate();
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [products, setProducts] = useState<any[]>([]);
   const [orderStatuses, setOrderStatuses] = useState<Record<number, "pending" | "confirmed" | "declined">>({});
 
-  const products = [
-    { id: 1, name: "Fresh Tomatoes", price: "₹40/kg", stock: "500kg", image: "🍅", orders: 12, rating: 4.8 },
-    { id: 2, name: "Organic Potatoes", price: "₹30/kg", stock: "800kg", image: "🥔", orders: 8, rating: 4.6 },
-    { id: 3, name: "Premium Onions", price: "₹25/kg", stock: "600kg", image: "🧅", orders: 15, rating: 4.9 }
-  ];
+  useEffect(() => {
+    fetch("http://localhost:5000/api/products")
+      .then(res => res.json())
+      .then(data => setProducts(data))
+      .catch(err => console.error("Fetch error:", err));
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpdate = (updatedProduct: any) => {
+    setProducts((prev) =>
+      prev.map((prod) =>
+        prod._id === updatedProduct._id ? updatedProduct : prod
+      )
+    );
+  };
 
   const orders = [
     { id: 1, vendor: "Raj's Food Cart", product: "Fresh Tomatoes", quantity: "50kg", amount: "₹2,000", status: "pending", time: "2 hours ago" },
@@ -75,14 +86,6 @@ const SupplierDashboard = () => {
     },
   };
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'confirmed': return 'bg-blue-100 text-blue-800';
-      case 'delivered': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
   const handleStatusChange = (orderId: number, status: "confirmed" | "declined") => {
     setOrderStatuses(prev => ({ ...prev, [orderId]: status }));
   };
@@ -115,7 +118,9 @@ const SupplierDashboard = () => {
               </div>
             </div>
           </div>
-          <Button variant="outline" onClick={() => navigate("/")}> <LogOut className="mr-2 h-4 w-4" /> Logout </Button>
+          <Button variant="outline" onClick={() => navigate("/")}>
+            <LogOut className="mr-2 h-4 w-4" /> Logout
+          </Button>
         </div>
       </header>
 
@@ -124,7 +129,9 @@ const SupplierDashboard = () => {
         <div className="lg:col-span-1 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center"><TrendingUp className="mr-2 h-5 w-5 text-accent" />Your Reach</CardTitle>
+              <CardTitle className="flex items-center">
+                <TrendingUp className="mr-2 h-5 w-5 text-accent" /> Your Reach
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="text-center">
@@ -159,26 +166,19 @@ const SupplierDashboard = () => {
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map(product => (
-                <Card key={product.id} className="hover:shadow-md">
+                <Card key={product._id} className="hover:shadow-md">
                   <CardContent className="pt-6">
                     <div className="text-center">
-                      <div className="text-4xl mb-2">{product.image}</div>
                       <h3 className="font-semibold text-lg">{product.name}</h3>
-                      <p className="text-accent font-bold">{product.price}</p>
+                      <p className="text-accent font-bold">₹{product.price}</p>
                     </div>
                     <div className="text-sm space-y-1 mt-3">
                       <div className="flex justify-between"><span>Stock:</span><span>{product.stock}</span></div>
-                      <div className="flex justify-between"><span>Orders:</span><span>{product.orders}</span></div>
-                      <div className="flex justify-between"><span>Rating:</span>
-                        <div className="flex items-center">
-                          <Star className="h-3 w-3 text-yellow-500 fill-current mr-1" />
-                          <span>{product.rating}</span>
-                        </div>
-                      </div>
+                      <div className="flex justify-between"><span>Category:</span><span>{product.category}</span></div>
+                      <div className="text-muted-foreground text-xs mt-1">{product.description}</div>
                     </div>
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" variant="outline" className="flex-1"><Camera className="mr-2 h-4 w-4" />Photo</Button>
-                      <Button size="sm" variant="outline" className="flex-1"><Edit className="mr-2 h-4 w-4" />Edit</Button>
+                      <EditItem product={product} onUpdate={handleUpdate} />
                     </div>
                   </CardContent>
                 </Card>
@@ -186,7 +186,7 @@ const SupplierDashboard = () => {
             </div>
           </div>
 
-          {/* Orders with interactive Confirm/Decline */}
+          {/* Orders */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center"><Package className="mr-2 h-5 w-5" /> Real-time Order Management</CardTitle>
@@ -225,8 +225,7 @@ const SupplierDashboard = () => {
             </CardContent>
           </Card>
 
-          {/* Quick Actions - Only View Vendors */}
-          {/* Quick Actions - View Vendors Dialog */}
+          {/* Quick Actions */}
           <Card>
             <CardHeader>
               <CardTitle>Quick Actions</CardTitle>
