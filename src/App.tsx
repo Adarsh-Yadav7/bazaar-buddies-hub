@@ -12,7 +12,7 @@ import SupplierLogin from "./pages/SupplierLogin";
 import VendorDashboard from "./pages/VendorDashboard";
 import SupplierDashboard from "./pages/SupplierDashboard";
 import Analytics from "./pages/Analytics";
-
+import AddProduct from "./pages/AddProduct";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -30,6 +30,7 @@ const App = () => (
             <Route path="/vendor-dashboard" element={<VendorDashboard />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
+            <Route path="/add-product" element={<AddProduct />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
