@@ -15,6 +15,12 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+app.use(cors({
+  origin: 'https://bazaar-buddies-hub.vercel.app',
+  credentials: true
+}));
+
+
 // Routes
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/vendors', vendorRoutes);
