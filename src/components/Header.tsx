@@ -29,14 +29,24 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
+<<<<<<< Updated upstream
             
       
+=======
+  <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
+    Marketplace
+  </a>
+  <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
+    Suppliers
+  </Link>
+  <a href="#about" className="text-foreground hover:text-primary transition-colors">
+    About
+  </a>
+>>>>>>> Stashed changes
 
-            <a href="#about" className="text-foreground hover:text-primary transition-colors">
-              About
-            </a>
-            <LanguageSwitcher />
-          </nav>
+  {/* 🔁 Replacing LanguageSwitcher with Google Translate */}
+  <div id="google_translate_element"></div>
+</nav>
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-3">
@@ -81,8 +91,9 @@ const Header = () => {
                 About
               </a>
               <div className="py-2">
-                <LanguageSwitcher />
+                <div id="google_translate_element"></div>
               </div>
+
               <div className="flex space-x-2 pt-2">
                 const navigate = useNavigate();
 
