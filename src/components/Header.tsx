@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -29,17 +29,18 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
-  
-  <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
-    Suppliers
-  </Link>
-  <a href="#about" className="text-foreground hover:text-primary transition-colors">
-    About
-  </a>
 
-  {/* 🔁 Replacing LanguageSwitcher with Google Translate */}
-  <div id="google_translate_element"></div>
-</nav>
+            <a href="#suppliers" className="text-foreground hover:text-primary transition-colors">
+              Suppliers
+            </a>
+            <a href="#features" className="text-foreground hover:text-primary transition-colors">
+              About
+            </a>
+
+
+            {/* 🔁 Replacing LanguageSwitcher with Google Translate */}
+            <div id="google_translate_element"></div>
+          </nav>
 
 
           {/* Action Buttons */}
@@ -50,7 +51,7 @@ const Header = () => {
                 3
               </Badge>
             </Button>
-            
+
             <div className="hidden sm:flex space-x-2">
               <Button variant="outline" size="sm">
                 <User className="h-4 w-4 mr-1" />
@@ -74,26 +75,26 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <nav className="flex flex-col space-y-3">
-              
+
 
               <a href="#about" className="text-foreground hover:text-primary transition-colors">
                 About
               </a>
               <div className="py-2">
-  <div id="google_translate_element"></div>
-</div>
+                <div id="google_translate_element"></div>
+              </div>
 
               <div className="flex space-x-2 pt-2">
                 const navigate = useNavigate();
 
-<Button
-  variant="outline"
-  size="sm"
-  onClick={() => navigate('/supplier-login')}
->
-  <User className="h-4 w-4 mr-1" />
-  Login
-</Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate('/supplier-login')}
+                >
+                  <User className="h-4 w-4 mr -1" />
+                  Login
+                </Button>
 
                 <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary">
                   Join Now
