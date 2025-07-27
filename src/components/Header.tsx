@@ -1,16 +1,24 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, User, Menu, X, Store, Truck } from 'lucide-react';
-import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-
-
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ShoppingCart, User, Menu, X, Store } from "lucide-react";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+
+  const handleProtectedClick = (path: string) => {
+    if (!isLoggedIn) {
+      alert("Please login to access this section.");
+      navigate("/supplier-login");
+    } else {
+      navigate(path);
+    }
+  };
 
   return (
     <header className="bg-card border-b border-border sticky top-0 z-50">
@@ -27,18 +35,26 @@ const Header = () => {
             </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Always show */}
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
+            <button
+              onClick={() => handleProtectedClick("/marketplace")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               Marketplace
-            </a>
-              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
-                Suppliers
-              </Link>
-
-            <a href="#about" className="text-foreground hover:text-primary transition-colors">
+            </button>
+            <button
+              onClick={() => handleProtectedClick("/SupplierDashboard")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
+              Suppliers
+            </button>
+            <button
+              onClick={() => handleProtectedClick("/about")}
+              className="text-foreground hover:text-primary transition-colors"
+            >
               About
-            </a>
+            </button>
             <LanguageSwitcher />
           </nav>
 
@@ -50,15 +66,21 @@ const Header = () => {
                 3
               </Badge>
             </Button>
-            
-            <div className="hidden sm:flex space-x-2">
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-1" />
-                Login
-              </Button>
-            </div>
 
-            {/* Mobile Menu Button */}
+            {!isLoggedIn && (
+              <div className="hidden sm:flex space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => navigate("/supplier-login")}
+                >
+                  <User className="h-4 w-4 mr-1" />
+                  Login
+                </Button>
+              </div>
+            )}
+
+            {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
               size="sm"
@@ -74,35 +96,47 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 border-t border-border pt-4">
             <nav className="flex flex-col space-y-3">
-              <a href="#marketplace" className="text-foreground hover:text-primary transition-colors">
+              <button
+                onClick={() => handleProtectedClick("/marketplace")}
+                className="text-left text-foreground hover:text-primary transition-colors"
+              >
                 Marketplace
-              </a>
-              <Link to="/SupplierDashboard" className="text-foreground hover:text-primary transition-colors">
-              Suppliers
-            </Link>
-
-              <a href="#about" className="text-foreground hover:text-primary transition-colors">
+              </button>
+              <button
+                onClick={() => handleProtectedClick("/SupplierDashboard")}
+                className="text-left text-foreground hover:text-primary transition-colors"
+              >
+                Suppliers
+              </button>
+              <button
+                onClick={() => handleProtectedClick("/about")}
+                className="text-left text-foreground hover:text-primary transition-colors"
+              >
                 About
-              </a>
+              </button>
               <div className="py-2">
                 <LanguageSwitcher />
               </div>
-              <div className="flex space-x-2 pt-2">
-                const navigate = useNavigate();
 
-<Button
-  variant="outline"
-  size="sm"
-  onClick={() => navigate('/supplier-login')}
->
-  <User className="h-4 w-4 mr-1" />
-  Login
-</Button>
-
-                <Button size="sm" className="flex-1 bg-gradient-to-r from-primary to-secondary">
-                  Join Now
-                </Button>
-              </div>
+              {!isLoggedIn && (
+                <div className="flex space-x-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => navigate("/supplier-login")}
+                  >
+                    <User className="h-4 w-4 mr-1" />
+                    Login
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="flex-1 bg-gradient-to-r from-primary to-secondary"
+                    onClick={() => navigate("/supplier-signup")}
+                  >
+                    Join Now
+                  </Button>
+                </div>
+              )}
             </nav>
           </div>
         )}
