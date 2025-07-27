@@ -7,12 +7,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
 import { ShoppingCart, ArrowLeft } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 
 const VendorLogin = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+
   // Signup form states
   const [vendorName, setVendorName] = useState('');
   const [shopName, setShopName] = useState('');
@@ -20,27 +21,106 @@ const VendorLogin = () => {
   const [location, setLocation] = useState('');
   const [productCategory, setProductCategory] = useState('');
   const [termsAccepted, setTermsAccepted] = useState(false);
-  
+
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate login - navigate to vendor dashboard
-    navigate('/vendor-dashboard');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/vendors/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.message === 'Login successful') {
+        toast({
+          title: 'Login Successful',
+          description: 'Welcome back! Redirecting to your home page...',
+        });
+        setTimeout(() => navigate('/vendor-dashboard'), 1500);
+      } else {
+        toast({
+          title: 'Login Failed',
+          description: data.message || 'Invalid credentials.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Login Error',
+        description: 'Server connection failed.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!termsAccepted) {
-      alert('Please accept the terms and conditions');
+      toast({
+        title: 'Terms Not Accepted',
+        description: 'You must accept the terms and conditions.',
+        variant: 'destructive',
+      });
       return;
     }
-    // Simulate signup - navigate to vendor dashboard
-    navigate('/vendor-dashboard');
+
+    try {
+      const response = await fetch('http://localhost:5000/api/vendors/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          vendorName,
+          shopName,
+          email,
+          password,
+          phoneNumber,
+          location,
+          productCategory
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.message === 'Vendor registered successfully') {
+        toast({
+          title: 'Signup Successful',
+          description: 'Account created! Please log in.',
+        });
+
+        // Reset form and switch to login mode
+        setVendorName('');
+        setShopName('');
+        setEmail('');
+        setPassword('');
+        setPhoneNumber('');
+        setLocation('');
+        setProductCategory('');
+        setTermsAccepted(false);
+        setIsLogin(true);
+      } else {
+        toast({
+          title: 'Signup Failed',
+          description: data.message || 'Something went wrong.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Signup Error',
+        description: 'Unable to reach server.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const productCategories = [
-    'Fruits & Vegetables', 'Grains & Cereals', 'Dairy Products', 'Meat & Poultry', 
+    'Fruits & Vegetables', 'Grains & Cereals', 'Dairy Products', 'Meat & Poultry',
     'Seafood', 'Spices & Herbs', 'Beverages', 'Bakery Items', 'Organic Products', 'Other'
   ];
 
@@ -55,15 +135,13 @@ const VendorLogin = () => {
             {isLogin ? 'Vendor Login' : 'Vendor Sign Up'}
           </CardTitle>
           <CardDescription>
-            {isLogin 
+            {isLogin
               ? 'Sign in to your vendor account to access suppliers and manage orders'
-              : 'Create your vendor account to start connecting with suppliers'
-            }
+              : 'Create your vendor account to start connecting with suppliers'}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {isLogin ? (
-            // Login Form
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -92,7 +170,6 @@ const VendorLogin = () => {
               </Button>
             </form>
           ) : (
-            // Signup Form
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="vendorName">Vendor Name / Full Name</Label>
@@ -105,7 +182,7 @@ const VendorLogin = () => {
                   required
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="shopName">Shop Name 🏪</Label>
                 <Input
@@ -199,18 +276,14 @@ const VendorLogin = () => {
               </Button>
             </form>
           )}
-          
-          {/* Toggle between login and signup */}
+
           <div className="text-center mt-4">
             <Button
               variant="link"
               onClick={() => setIsLogin(!isLogin)}
               className="text-sm"
             >
-              {isLogin 
-                ? "Don't have an account? Sign up" 
-                : "Already have an account? Sign in"
-              }
+              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
             </Button>
           </div>
 
