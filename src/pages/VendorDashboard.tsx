@@ -244,10 +244,14 @@ const VendorDashboard = () => {
                     <Package className="h-6 w-6 mb-2" />
                     <span>Track My Orders</span>
                   </Button>
-                  <Button variant="outline" className="h-20 flex-col">
-                    <TrendingUp className="h-6 w-6 mb-2" />
-                    <span>View Analytics</span>
-                  </Button>
+                  <Button
+  variant="outline"
+  className="h-20 flex-col"
+  onClick={() => navigate('/analytics')}
+>
+  <TrendingUp className="h-6 w-6 mb-2" />
+  <span>View Analytics</span>
+</Button>
                 </div>
               </CardContent>
             </Card>
