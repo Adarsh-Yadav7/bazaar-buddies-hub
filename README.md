@@ -16,9 +16,7 @@ We help vendors access **high-quality raw materials at wholesale prices** while 
 
 ## 📸 Demo
 
-🔗 **Live Preview**: [https://bazaarbuddiehub.live](https://bazaarbuddiehub.live) *(replace with your actual link)*  
-📷 **Screenshots**:  
-![Demo Screenshot](./assets/screenshot1.png)
+🔗 **Live Preview**: [https://bazaarbuddiehub.live](https://bazaarbuddiehub.live) *(replace with your actual link)* 
 
 ---
 
@@ -37,9 +35,8 @@ We help vendors access **high-quality raw materials at wholesale prices** while 
 
 | Category     | Technology            |
 |--------------|------------------------|
-| Frontend     | HTML, CSS, JavaScript  |
-| Backend      | Node.js, Express.js    |
-| Templating   | EJS                    |
+| Frontend     | React, TypeScript |
+| Backend      | Node.js, Express.js|
 | Database     | MongoDB                |
 | Hosting      | Vercel / Heroku / Render (choose one) |
 | AI/ML (future) | Price Trend Analysis Module |
@@ -54,7 +51,24 @@ git clone https://github.com/yourusername/bazaar-buddie-hub.git
 cd bazaar-buddie-hub
 
 # Install dependencies
+cd backend
 npm install
 
-# Start the server
+nodemon app.js
+
+### 🖥️ Running the Project (Frontend)
+
+After starting the backend server, follow these steps in a new terminal window:
+
+
+# Step 1: Navigate one directory up
+cd ..
+
+# Step 2: Install frontend dependencies
+npm install
+
+# Step 3: Start the frontend development server
 npm run dev
+
+
+
