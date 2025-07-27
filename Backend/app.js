@@ -16,9 +16,9 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use('/api/suppliers', supplierRoutes);
-app.use('/api/vendors', vendorRoutes);
-app.use("/api/products", productRoutes);
+app.use('https://bazaar-buddies-hub.onrender.com/api/suppliers', supplierRoutes);
+app.use('https://bazaar-buddies-hub.onrender.com/api/vendors', vendorRoutes);
+app.use("https://bazaar-buddies-hub.onrender.com/api/products", productRoutes);
 
 
 const PORT = process.env.PORT || 5000;
