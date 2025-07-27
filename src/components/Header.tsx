@@ -55,7 +55,9 @@ const Header = () => {
             <div className="hidden sm:flex space-x-2">
               <Button variant="outline" size="sm">
                 <User className="h-4 w-4 mr-1" />
-                Login
+                <a href='#suppliers'>
+                  Login
+                </a>
               </Button>
             </div>
 
