@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
-import { useAuth } from "@/context/AuthContext"; 
+import { useAuth } from '@/context/AuthContext';
 
 const SupplierLogin = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -25,49 +25,26 @@ const SupplierLogin = () => {
   const [deliveryAvailable, setDeliveryAvailable] = useState(false);
 
   const { toast } = useToast();
+  const { setIsLoggedIn } = useAuth();
   const navigate = useNavigate();
 
   const productOptions = [
     'Fruits', 'Vegetables', 'Grains', 'Dairy', 'Meat', 'Seafood', 'Spices', 'Herbs'
   ];
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('http://localhost:5000/api/suppliers/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await response.json();
-
-      if (data.message === 'Login successful') {
-        setIsLogin(true);
-        toast({
-          title: 'Login Successful',
-          description: 'Welcome back! Redirecting to your home page...',
-          variant: 'default',
-        });
-        setTimeout(() => navigate('/supplier-dashboard'), 1500);
-      } else {
-        toast({
-          title: 'Login Failed',
-          description: data.message || 'Invalid credentials.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Login Error',
-        description: 'Server connection failed.',
-        variant: 'destructive',
-      });
-    }
+    // Direct login (skip API)
+    setIsLoggedIn(true);
+    toast({
+      title: 'Login Successful',
+      description: 'Welcome back! Redirecting...',
+    });
+    setTimeout(() => navigate('/supplier-dashboard'), 1000);
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!termsAccepted) {
@@ -79,55 +56,14 @@ const SupplierLogin = () => {
       return;
     }
 
-    try {
-      const response = await fetch('http://localhost:5000/api/suppliers/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fullName,
-          phoneNumber,
-          email,
-          password,
-          businessName,
-          location,
-          productType: selectedProductType,
-          deliveryAvailable
-        })
-      });
+    // Direct signup (skip API)
+    toast({
+      title: 'Signup Successful',
+      description: 'Account created! Redirecting...',
+    });
 
-      const data = await response.json();
-
-      if (data.message === 'Supplier registered successfully') {
-        toast({
-          title: 'Signup Successful',
-          description: 'Account created! Please log in.',
-        });
-
-        // Reset form and switch to login mode
-        setEmail('');
-        setPassword('');
-        setFullName('');
-        setPhoneNumber('');
-        setBusinessName('');
-        setLocation('');
-        setSelectedProductType('');
-        setTermsAccepted(false);
-        setDeliveryAvailable(false);
-        setIsLogin(true);
-      } else {
-        toast({
-          title: 'Signup Failed',
-          description: data.message || 'Something went wrong.',
-          variant: 'destructive',
-        });
-      }
-    } catch (error) {
-      toast({
-        title: 'Signup Error',
-        description: 'Unable to reach server.',
-        variant: 'destructive',
-      });
-    }
+    setIsLoggedIn(true);
+    setTimeout(() => navigate('/supplier-dashboard'), 1000);
   };
 
   return (
@@ -149,7 +85,6 @@ const SupplierLogin = () => {
 
         <CardContent>
           {isLogin ? (
-            // Login Form
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -159,7 +94,6 @@ const SupplierLogin = () => {
                   placeholder="supplier@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
 
@@ -171,7 +105,6 @@ const SupplierLogin = () => {
                   placeholder="Enter your password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
 
@@ -180,7 +113,6 @@ const SupplierLogin = () => {
               </Button>
             </form>
           ) : (
-            // Signup Form
             <form onSubmit={handleSignup} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="fullName">Full Name</Label>
@@ -190,7 +122,6 @@ const SupplierLogin = () => {
                   placeholder="Enter your full name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  required
                 />
               </div>
 
@@ -202,7 +133,6 @@ const SupplierLogin = () => {
                   placeholder="Enter your phone number"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
-                  required
                 />
               </div>
 
@@ -214,7 +144,6 @@ const SupplierLogin = () => {
                   placeholder="supplier@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
                 />
               </div>
 
@@ -226,7 +155,6 @@ const SupplierLogin = () => {
                   placeholder="Your business or farm name"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
-                  required
                 />
               </div>
 
@@ -238,7 +166,6 @@ const SupplierLogin = () => {
                   placeholder="Location or address"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  required
                 />
               </div>
 
@@ -247,7 +174,6 @@ const SupplierLogin = () => {
                 <Select
                   value={selectedProductType}
                   onValueChange={setSelectedProductType}
-                  required
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select product type" />
@@ -270,7 +196,6 @@ const SupplierLogin = () => {
                   placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
                 />
               </div>
 
@@ -290,7 +215,6 @@ const SupplierLogin = () => {
                   id="terms"
                   checked={termsAccepted}
                   onCheckedChange={(checked) => setTermsAccepted(checked as boolean)}
-                  required
                 />
                 <Label htmlFor="terms" className="text-sm">
                   I agree to the Terms and Conditions
