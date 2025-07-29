@@ -7,7 +7,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { useAuth } from '@/context/AuthContext';
 
@@ -29,22 +35,54 @@ const SupplierLogin = () => {
   const navigate = useNavigate();
 
   const productOptions = [
-    'Fruits', 'Vegetables', 'Grains', 'Dairy', 'Meat', 'Seafood', 'Spices', 'Herbs'
+    'Fruits',
+    'Vegetables',
+    'Grains',
+    'Dairy',
+    'Meat',
+    'Seafood',
+    'Spices',
+    'Herbs',
   ];
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Direct login (skip API)
-    setIsLoggedIn(true);
-    toast({
-      title: 'Login Successful',
-      description: 'Welcome back! Redirecting...',
-    });
-    setTimeout(() => navigate('/supplier-dashboard'), 1000);
+    try {
+      const res = await fetch('http://localhost:5000/api/suppliers/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({
+          title: 'Login Failed',
+          description: data.message || 'Invalid credentials.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Login Successful',
+        description: 'Welcome back! Redirecting...',
+      });
+      setIsLoggedIn(true);
+      setTimeout(() => navigate('/supplier-dashboard'), 1000);
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong during login.',
+        variant: 'destructive',
+      });
+    }
   };
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!termsAccepted) {
@@ -56,14 +94,53 @@ const SupplierLogin = () => {
       return;
     }
 
-    // Direct signup (skip API)
-    toast({
-      title: 'Signup Successful',
-      description: 'Account created! Redirecting...',
-    });
+    const supplierData = {
+      fullName,
+      phoneNumber,
+      email,
+      password,
+      businessName,
+      location,
+      productType: selectedProductType,
+      deliveryAvailable,
+    };
 
-    setIsLoggedIn(true);
-    setTimeout(() => navigate('/supplier-dashboard'), 1000);
+    try {
+      const res = await fetch('http://localhost:5000/api/suppliers/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(supplierData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast({
+          title: 'Signup Failed',
+          description: data.message || 'Could not create account.',
+          variant: 'destructive',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Signup Successful',
+        description: 'Account created! Redirecting...',
+      });
+      setIsLogin(true); // switch to login form
+      toast({
+        title: 'Account Created!',
+        description: 'Now login with your credentials.',
+      });
+
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong during signup.',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -119,7 +196,6 @@ const SupplierLogin = () => {
                 <Input
                   id="fullName"
                   type="text"
-                  placeholder="Enter your full name"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
@@ -130,18 +206,16 @@ const SupplierLogin = () => {
                 <Input
                   id="phoneNumber"
                   type="tel"
-                  placeholder="Enter your phone number"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="signupEmail">Email Address</Label>
+                <Label htmlFor="signupEmail">Email</Label>
                 <Input
                   id="signupEmail"
                   type="email"
-                  placeholder="supplier@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -152,7 +226,6 @@ const SupplierLogin = () => {
                 <Input
                   id="businessName"
                   type="text"
-                  placeholder="Your business or farm name"
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                 />
@@ -163,7 +236,6 @@ const SupplierLogin = () => {
                 <Input
                   id="location"
                   type="text"
-                  placeholder="Location or address"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
@@ -193,7 +265,6 @@ const SupplierLogin = () => {
                 <Input
                   id="signupPassword"
                   type="password"
-                  placeholder="Create a password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -235,7 +306,7 @@ const SupplierLogin = () => {
             >
               {isLogin
                 ? "Don't have an account? Sign up"
-                : "Already have an account? Sign in"}
+                : 'Already have an account? Sign in'}
             </Button>
           </div>
 
