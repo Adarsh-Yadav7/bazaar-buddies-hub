@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 connectDB();
 
-// ✅ Only this CORS config — for local frontend
+// ✅ Correct CORS configuration
 app.use(cors({
   origin: 'http://localhost:8080',
   credentials: true,
@@ -22,7 +22,7 @@ app.use(express.json());
 // Routes
 app.use('/api/suppliers', supplierRoutes);
 app.use('/api/vendors', vendorRoutes);
-app.use("/api/products", productRoutes);
+app.use('/api/products', productRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
