@@ -13,9 +13,10 @@ connectDB();
 
 // ✅ Correct CORS configuration
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: 'https://bazaar-buddies-hub.vercel.app',
   credentials: true,
 }));
+
 
 app.use(express.json());
 

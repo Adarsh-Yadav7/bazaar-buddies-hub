@@ -33,8 +33,8 @@ const VendorAuth = () => {
     setLoading(true);
 
     const url = isLogin
-      ? 'http://localhost:5000/api/vendors/login'
-      : 'http://localhost:5000/api/vendors/signup';
+      ? 'https://bazaar-buddies-hub.onrender.com/api/vendors/login'
+      : 'https://bazaar-buddies-hub.onrender.com/api/vendors/signup';
 
     const payload = isLogin
       ? { email: form.email, password: form.password }
